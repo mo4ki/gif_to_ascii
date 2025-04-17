@@ -9,10 +9,10 @@
 
 Просто анимация в консоль
 ```
-python main.py giphy.gif
+python main.py ./gifs/giphy.gif
 ```
 
 Сохранение кадров в json
 ```
-python main.py giphy.gif --save Sss.json
+python main.py ./gifs/giphy.gif --save Sss.json
 ```
