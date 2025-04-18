@@ -49,22 +49,27 @@ def to_ascii(img, cw, ch, lt):
     for _ in range(th): rows.append("".join([lt[px[p_idx + x]] for x in range(tw)])); p_idx += tw
     return "\n".join(rows)
 
-def animate(frms, fps=30, iters=20, clr=True):
+# --- Модифицированная функция animate с центрированием ---
+def animate(frms, fps=30, iters=327614901276320, clr=True):
     pause = 1.0 / max(1, fps); home = "\x1b[H" # ANSI home cursor
     for _ in range(iters):
         t_start = time.perf_counter()
         for frm in frms:
-            if clr: sys.stdout.write(home)
-            sys.stdout.write(frm); sys.stdout.flush()
+            if clr: sys.stdout.write(home) # Очистка и наверх
+            term_w, term_h = os.get_terminal_size() # Get terminal size (WxH)
+            lines = frm.split('\n') # Split frame into lines
+            fh = len(lines); fw = max(len(l) for l in lines) if lines else 0 # Frame height (fh) and width (fw)
+            pad_l = " " * max(0, (term_w - fw) // 2) # Calculate left padding spaces
+            sys.stdout.write("\n" * max(0, (term_h - fh) // 2) + "\n".join(pad_l + l for l in lines))
+            sys.stdout.flush()
+
             elapsed = time.perf_counter() - t_start
             time.sleep(max(0, pause - elapsed)); t_start = time.perf_counter() # Frame timing
     sys.stdout.write("\n"); sys.stdout.flush()
 
 # --- Main ---
-save_path = None;
-args = sys.argv[1:]
+save_path = None; args = sys.argv[1:]
 gif_path = args[0] if args else None
-
 if not gif_path: print("Specify GIF path"); sys.exit(1)
 if "--save" in args:
     try: save_path = args[args.index("--save") + 1]
@@ -75,7 +80,5 @@ font = ImageFont.load_default(); weights, cw, ch = calc_ws(font); lut = create_l
 img_frms = extract_f(gif); ascii_frms = [f for f in [to_ascii(f, cw, ch, lut) for f in img_frms] if f]
 
 if save_path:
-    with open(save_path, 'w', encoding='utf-8') as f:
-        json.dump(ascii_frms, f); print(f"Saved to {save_path}")
-
+    with open(save_path, 'w', encoding='utf-8') as f: json.dump(ascii_frms, f); print(f"Saved to {save_path}")
 if ascii_frms: animate(ascii_frms, fps=22)
