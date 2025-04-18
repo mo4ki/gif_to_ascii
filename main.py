@@ -50,7 +50,7 @@ def to_ascii(img, cw, ch, lt):
     return "\n".join(rows)
 
 # --- Модифицированная функция animate с центрированием ---
-def animate(frms, fps=30, iters=327614901276320, clr=True):
+def animate(frms, fps=30, iters=20, clr=True):
     pause = 1.0 / max(1, fps); home = "\x1b[H" # ANSI home cursor
     for _ in range(iters):
         t_start = time.perf_counter()
