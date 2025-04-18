@@ -16,3 +16,8 @@ python main.py ./gifs/giphy.gif
 ```
 python main.py ./gifs/giphy.gif --save Sss.json
 ```
+
+## Немного скринов
+
+![Немного скринов](https://github.com/user-attachments/assets/0973c0d8-3ffd-46cd-8283-02e36f584c3b)
+![Немного скринов](https://github.com/user-attachments/assets/82f878d6-5f97-4464-bc3e-3621a97c4779)
